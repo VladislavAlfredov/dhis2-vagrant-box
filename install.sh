@@ -109,7 +109,40 @@ downloadDhisWar() {
 configureTomcat() {
     echo "############################## Configuring Tomcat  ##############################"
 
-    
+    touch /etc/init.d/tomcat
+
+    # Printing to file
+    echo "#!/bin/sh" >> /etc/init.d/tomcat
+    echo "" >> /etc/init.d/tomcat
+
+    echo "case \$1 in" >> /etc/init.d/tomcat
+
+    echo "start)" >> /etc/init.d/tomcat
+    echo "    sh /home/dhis/tomcat-dhis/bin/startup.sh" >> /etc/init.d/tomcat
+    echo ";;" >> /etc/init.d/tomcat
+
+    echo "stop)" >> /etc/init.d/tomcat
+    echo "    sh /home/dhis/tomcat-dhis/bin/shutdown.sh" >> /etc/init.d/tomcat
+    echo ";;" >> /etc/init.d/tomcat
+
+    echo "restart)" >> /etc/init.d/tomcat
+    echo "    sh /home/dhis/tomcat-dhis/bin/shutdown.sh" >> /etc/init.d/tomcat
+    echo "    sleep 5" >> /etc/init.d/tomcat
+    echo "    sh /home/dhis/tomcat-dhis/bin/startup.sh" >> /etc/init.d/tomcat
+    echo ";;" >> /etc/init.d/tomcat
+
+    echo "esac" >> /etc/init.d/tomcat
+    echo "exit 0" >> /etc/init.d/tomcat
+
+    # Make sure the tomcat init script will be invoked 
+    # during system startup and shutdown:
+    chmod +x /etc/init.d/tomcat
+    /usr/sbin/update-rc.d -f tomcat defaults 81
+}
+
+# Start DHIS2 instance
+startDhis2Instance() {
+    sh /home/dhis/tomcat-dhis/bin/startup.sh
 }
 
 
@@ -123,6 +156,8 @@ installDhis2Instance() {
     installTomcat
     createHibernateConfiguration
     downloadDhisWar
+    configureTomcat
+    startDhis2Instance
 }
 
 
