@@ -66,7 +66,7 @@ installTomcat() {
 }
 
 # Create hibernate configuration file for DHIS2
-createConfiguration() {
+createHibernateConfiguration() {
     echo "############################## Creating hibernate configuration  ##############################"
 
     # Create configuration directory
@@ -108,6 +108,8 @@ downloadDhisWar() {
 # Add script which will force tomcat to start on boot
 configureTomcat() {
     echo "############################## Configuring Tomcat  ##############################"
+
+    
 }
 
 
@@ -119,7 +121,7 @@ installDhis2Instance() {
     installPostgreSQL
     installOracleJdk
     installTomcat
-    createConfiguration
+    createHibernateConfiguration
     downloadDhisWar
 }
 
